@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   server: {
     watch: {
-      ignored: ["**/db.json"], // این خط db.json رو از watch در میاره
+      ignored: ["**/db.json"],
     },
   },
   plugins: [
@@ -15,5 +15,4 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: "/multiapp/",
 });
