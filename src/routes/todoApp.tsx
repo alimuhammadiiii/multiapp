@@ -92,7 +92,12 @@ function AddTodo() {
 function Todos() {
   const todoQuery = useQueryTodos();
   const [sortby, setSortby] = useState<"date" | "text">("date");
-  const [sortDirection, setSortDirection] = useState<"desc" | "ascend">("ascend");
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("asc");
+  const [filter, setFilter] = useState<"default" | "inProgress" | "complete">("default");
+
+  const mutateDeleteTodo = useMutationDeleteTodo();
+  const mutateEditTodo = useMutationEditTodo();
+
   const todos = useMemo(() => {
     const sorted = todoQuery.data?.toSorted((a, b) => {
       let sortA = a;
@@ -112,10 +117,19 @@ function Todos() {
       return 0;
     });
 
-    return sorted;
-  }, [sortDirection, sortby, todoQuery.data]);
-  const mutateDeleteTodo = useMutationDeleteTodo();
-  const mutateEditTodo = useMutationEditTodo();
+    const sortedAndFilteredTodos = sorted?.filter((todo) => {
+      if (filter === "inProgress") {
+        return todo.isComplete === false;
+      }
+      if (filter === "complete") {
+        return todo.isComplete === true;
+      }
+
+      return true;
+    });
+
+    return sortedAndFilteredTodos;
+  }, [sortDirection, sortby, filter, todoQuery.data]);
 
   console.log(todos);
 
@@ -131,7 +145,7 @@ function Todos() {
     <>
       <div className="flex justify-start items-center gap-6">
         {sortDirection === "desc" ? (
-          <button onClick={() => setSortDirection("ascend")}>
+          <button onClick={() => setSortDirection("asc")}>
             <TbSortAscending />
           </button>
         ) : (
@@ -150,6 +164,7 @@ function Todos() {
             <option value="date">Date</option>
             <option value="text">Text</option>
           </select>
+          <FilterTodos filter={filter} onChangeValue={setFilter} />
         </div>
       </div>
       <ul className="grow flex flex-col gap-3.5">
@@ -196,5 +211,27 @@ function TodoItem({ todo, onDelete, onEdit, onComplete }: TodoItemProps) {
         <MdDelete size={25} />
       </button>
     </li>
+  );
+}
+
+function FilterTodos({
+  filter,
+  onChangeValue,
+}: {
+  filter: string;
+  onChangeValue: (value: "default" | "inProgress" | "complete") => void;
+}) {
+  return (
+    <>
+      <label>filter</label>
+      <select
+        value={filter}
+        onChange={(e) => onChangeValue(e.target.value as "default" | "inProgress" | "complete")}
+      >
+        <option value="default">Default</option>
+        <option value="inProgress">In Progress</option>
+        <option value="complete">Complete</option>
+      </select>
+    </>
   );
 }

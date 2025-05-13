@@ -6,7 +6,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <Outlet />
-      <TanStackRouterDevtools />
+      <TanStackRouterDevtools position="bottom-right" />
       <ToastContainer
         position="bottom-left"
         autoClose={5000} // ← این تنظیم زمان خاموش شدن است
