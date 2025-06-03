@@ -6,9 +6,13 @@
 
 body {
   margin: 0;
-  height: 100vh;
+  height: 100dvh;
 }
 
 input[type="checkbox"] {
-  accent-color: color-mix(in oklab, var(--color-white) /* #fff = #ffffff */ 30%, transparent);
+  accent-color: color-mix(
+    in oklab,
+    var(--color-white) /* #fff = #ffffff */ 30%,
+    transparent
+  );
 }
