@@ -9,7 +9,7 @@ export const Route = createRootRoute({
       <TanStackRouterDevtools position="bottom-right" />
       <ToastContainer
         position="bottom-left"
-        autoClose={5000} // ← این تنظیم زمان خاموش شدن است
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
