@@ -11,11 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as UsersImport } from './routes/users'
 import { Route as TodoAppImport } from './routes/todoApp'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const UsersRoute = UsersImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const TodoAppRoute = TodoAppImport.update({
   id: '/todoApp',
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TodoAppImport
       parentRoute: typeof rootRoute
     }
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/todoApp': typeof TodoAppRoute
+  '/users': typeof UsersRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/todoApp': typeof TodoAppRoute
+  '/users': typeof UsersRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/todoApp': typeof TodoAppRoute
+  '/users': typeof UsersRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/todoApp'
+  fullPaths: '/' | '/about' | '/todoApp' | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/todoApp'
-  id: '__root__' | '/' | '/about' | '/todoApp'
+  to: '/' | '/about' | '/todoApp' | '/users'
+  id: '__root__' | '/' | '/about' | '/todoApp' | '/users'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +114,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   TodoAppRoute: typeof TodoAppRoute
+  UsersRoute: typeof UsersRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   TodoAppRoute: TodoAppRoute,
+  UsersRoute: UsersRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/todoApp"
+        "/todoApp",
+        "/users"
       ]
     },
     "/": {
@@ -128,6 +148,9 @@ export const routeTree = rootRoute
     },
     "/todoApp": {
       "filePath": "todoApp.tsx"
+    },
+    "/users": {
+      "filePath": "users.tsx"
     }
   }
 }
