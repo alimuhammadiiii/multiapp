@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -57,11 +57,13 @@ export const useMutationEditTodo = () => {
   });
 };
 
-function fetchTodos() {
+export function getTodos({ pageParam = 1 }) {
   return axios
-    .get("http://localhost:4000/todos")
-    .then((res) => (res.data as Array<Todo>).map((t) => ({ ...t, date: new Date(t.date) })));
+    .get(`http://localhost:4000/todos`, {
+      params: {
+        _page: pageParam,
+        _per_page: 10,
+      },
+    })
+    .then((res) => res);
 }
-export const useQueryTodos = () => {
-  return useQuery({ queryKey: ["todos"], queryFn: fetchTodos });
-};
